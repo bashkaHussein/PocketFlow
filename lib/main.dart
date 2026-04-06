@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pocket_flow/screens/auth/login_screen.dart';
+
 import 'package:pocket_flow/screens/auth/splash_screen.dart';
 
 void main() {

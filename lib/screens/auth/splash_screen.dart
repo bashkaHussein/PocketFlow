@@ -44,26 +44,14 @@ class _SplashScreenState extends State<SplashScreen>
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              stops: const [0.23, 1.0],
-              colors: const [
-                Color(0xFF18181B), // Dark grayish black
+              colors: [
                 Color(0xFF2B8761), // Vibrant green
+                Color(0xFF18181B), // Dark grayish black
               ],
             ),
           ),
           child: Stack(
             children: [
-              // Background wave pattern at the top
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Image.asset(
-                  'assets/images/Wave-circle.png',
-                  fit: BoxFit.fitWidth,
-                  alignment: Alignment.topCenter,
-                ),
-              ),
 
               // Central hero element with "Antigravity" floating animation
               Center(
