@@ -1,6 +1,8 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pocket_flow/screens/auth/onboarding_screen.dart';
+import 'package:pocket_flow/screens/auth/login_screen_widgets.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -21,6 +23,16 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(seconds: 4),
     )..repeat();
+
+    // Navigate to Login Screen after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        );
+      }
+    });
   }
 
   @override
@@ -52,7 +64,6 @@ class _SplashScreenState extends State<SplashScreen>
           ),
           child: Stack(
             children: [
-
               // Central hero element with "Antigravity" floating animation
               Center(
                 child: SizedBox(
@@ -165,6 +176,22 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
               ),
+              // Positioned(
+              //   bottom: 80,
+              //   left: 24,
+              //   right: 24,
+              //   child: CustomButton(
+              //     text: 'Get Started',
+              //     onPressed: () {
+              //       Navigator.pushReplacement(
+              //         context,
+              //         MaterialPageRoute(
+              //           builder: (context) => const OnboardingScreen(),
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ),
