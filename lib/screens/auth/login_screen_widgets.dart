@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const Color primaryGreen = Color(0xFF2D8B6A);
+  static const Color darkBlue = Color(0xFF091031);
   static const Color textDark = Color(0xFF1E232C);
   static const Color textGrey = Color(0xFF8391A1);
   static const Color borderGrey = Color(0xFFE8ECF4);
   static const Color errorRed = Color(0xFFE53935);
+  static const Color softGreen = Color(0xFFE8F5E9);
+  static const Color softRed = Color(0xFFFFEBEE);
   static const Color scaffoldBackground = Colors.white;
 }
 

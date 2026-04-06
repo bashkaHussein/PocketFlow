@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_flow/screens/auth/login_screen_widgets.dart';
+import 'package:pocket_flow/screens/home/home_screen.dart';
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -22,9 +23,10 @@ class _LoginscreenState extends State<Loginscreen> {
 
     if (_formKey.currentState!.validate() && _rememberMe) {
       // Form is valid and terms are accepted
-      ScaffoldMessenger.of(
+      Navigator.pushReplacement(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Processing Login...')));
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
     }
   }
 
