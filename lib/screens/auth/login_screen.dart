@@ -42,24 +42,37 @@ class _LoginscreenState extends State<Loginscreen> {
               children: [
                 const SizedBox(height: 80),
                 // Logo/Title
-                const Text(
-                  'PocketFlow',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.account_balance_wallet_rounded,
+                      color: AppColors.primaryGreen,
+                      size: 40,
+                    ),
+                    const SizedBox(width: 12),
+                    const Text(
+                      'PocketFlow',
+                      style: TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: -1.5,
+                        color: AppColors.textDark,
+                      ),
+                    ),
+                  ],
                 ),
                 const Text(
                   'Welcome Back',
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                     color: AppColors.textDark,
                   ),
                 ),
                 const SizedBox(height: 48),
-                // Email Field
+                // ... (rest of the fields)
+                // (Existing fields: Email, Password, Checkbox, Sign in, Sign Up)
                 CustomTextField(
                   controller: _emailController,
                   label: 'E-mail',
@@ -79,7 +92,6 @@ class _LoginscreenState extends State<Loginscreen> {
                   },
                 ),
                 const SizedBox(height: 24),
-                // Password Field
                 CustomTextField(
                   controller: _passwordController,
                   label: 'Password',
@@ -106,7 +118,6 @@ class _LoginscreenState extends State<Loginscreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                // Checkbox Row
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -172,10 +183,8 @@ class _LoginscreenState extends State<Loginscreen> {
                   ],
                 ),
                 const SizedBox(height: 32),
-                // Sign In Button
                 CustomButton(text: 'Sign in', onPressed: _submit),
                 const SizedBox(height: 24),
-                // Sign Up Link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -184,9 +193,7 @@ class _LoginscreenState extends State<Loginscreen> {
                       style: TextStyle(color: AppColors.textDark, fontSize: 13),
                     ),
                     TextButton(
-                      onPressed: () {
-                        // Navigate to Sign Up
-                      },
+                      onPressed: () {},
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                         minimumSize: Size.zero,
@@ -203,7 +210,32 @@ class _LoginscreenState extends State<Loginscreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 200),
+                const SizedBox(height: 48),
+                // Floating-style menu button on the left
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.menu,
+                      color: AppColors.textDark,
+                      size: 24,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 100),
                 // Footer
                 const Text(
                   'Powered by Dalka & Bashir',
