@@ -203,16 +203,16 @@ class _LoginscreenState extends State<Loginscreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 80),
+                const SizedBox(height: 200),
                 // Footer
                 const Text(
                   'Powered by Dalka & Bashir',
-                  style: TextStyle(color: AppColors.textGrey, fontSize: 12),
+                  style: TextStyle(color: AppColors.textGrey, fontSize: 15),
                 ),
                 const SizedBox(height: 4),
                 const Text(
                   '© 2026 All Rights Reserved',
-                  style: TextStyle(color: AppColors.textGrey, fontSize: 12),
+                  style: TextStyle(color: AppColors.textGrey, fontSize: 15),
                 ),
                 const SizedBox(height: 24),
               ],
