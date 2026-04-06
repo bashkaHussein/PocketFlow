@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_flow/screens/auth/login_screen_widgets.dart';
+<<<<<<< HEAD
 import 'package:pocket_flow/screens/home/home_screen.dart';
+=======
+import 'package:pocket_flow/screens/auth/register_scree.dart';
+>>>>>>> d1fac1d5d2ddb170dcb7ecce833afcb325627a51
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
@@ -13,7 +17,7 @@ class _LoginscreenState extends State<Loginscreen> {
   final _formKey = GlobalKey<FormState>();
   bool _rememberMe = false;
   bool _showCheckboxError = false;
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   void _submit() {
@@ -76,21 +80,15 @@ class _LoginscreenState extends State<Loginscreen> {
                       ),
                     ),
                     const SizedBox(height: 48),
-                    // Email Field
+                    // Username Field
                     CustomTextField(
-                      controller: _emailController,
-                      label: 'E-mail',
-                      hintText: 'Enter your email',
-                      prefixIcon: Icons.email_outlined,
+                      controller: _usernameController,
+                      label: 'Username',
+                      hintText: 'Enter your username',
+                      prefixIcon: Icons.alternate_email,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Email is required';
-                        }
-                        final emailRegex = RegExp(
-                          r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                        );
-                        if (!emailRegex.hasMatch(value)) {
-                          return 'Please enter a valid email address';
+                          return 'Username is required';
                         }
                         return null;
                       },
@@ -205,7 +203,14 @@ class _LoginscreenState extends State<Loginscreen> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterScreen(),
+                              ),
+                            );
+                          },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             minimumSize: Size.zero,
@@ -242,5 +247,12 @@ class _LoginscreenState extends State<Loginscreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
