@@ -1,25 +1,9 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:pocket_flow/models/transaction.dart';
 import 'package:pocket_flow/screens/auth/login_screen_widgets.dart';
 import 'package:pocket_flow/screens/home/notification_screen.dart';
-
-class Transaction {
-  final String title;
-  final String category;
-  final double amount;
-  final DateTime date;
-  final bool isIncome;
-  final String currency;
-
-  Transaction({
-    required this.title,
-    required this.category,
-    required this.amount,
-    required this.date,
-    required this.isIncome,
-    required this.currency,
-  });
-}
+import 'package:pocket_flow/screens/home/all_transactions_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       amount: 350.00,
       date: DateTime.now(),
       isIncome: true,
+      type: TransactionType.income,
       currency: 'USD',
     ),
     Transaction(
@@ -48,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       amount: 200.00,
       date: DateTime.now(),
       isIncome: false,
+      type: TransactionType.expense,
       currency: 'USD',
     ),
     Transaction(
@@ -56,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
       amount: 20.00,
       date: DateTime.now(),
       isIncome: false,
+      type: TransactionType.expense,
       currency: 'USD',
     ),
   ];
@@ -269,12 +256,114 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: _showTransactionChoice,
         backgroundColor: AppColors.primaryGreen,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: const Icon(Icons.add, color: Colors.white, size: 32),
       ),
       bottomNavigationBar: _buildBottomNavBar(),
+    );
+  }
+
+  void _showTransactionChoice() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(24),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Choose transaction type',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textDark,
+                ),
+              ),
+              const SizedBox(height: 24),
+              _buildChoiceItem(
+                icon: Icons.account_balance_wallet_rounded,
+                label: 'Income',
+                color: const Color(0xFF2D8B6A),
+                onTap: () {
+                  Navigator.pop(context);
+                  _showTransactionModal(type: TransactionType.income);
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildChoiceItem(
+                icon: Icons.receipt_long_rounded,
+                label: 'Expense',
+                color: const Color(0xFFE53935),
+                onTap: () {
+                  Navigator.pop(context);
+                  _showTransactionModal(type: TransactionType.expense);
+                },
+              ),
+              const SizedBox(height: 12),
+              _buildChoiceItem(
+                icon: Icons.stars_rounded,
+                label: 'Bonus',
+                color: Colors.amber[700]!,
+                onTap: () {
+                  Navigator.pop(context);
+                  _showTransactionModal(type: TransactionType.bonus);
+                },
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildChoiceItem({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: color.withOpacity(0.2)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: Colors.white, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textDark,
+              ),
+            ),
+            const Spacer(),
+            Icon(Icons.chevron_right, color: Colors.grey[400]),
+          ],
+        ),
+      ),
     );
   }
 
@@ -510,11 +599,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _showTransactionModal({bool isIncome = true}) {
+  void _showTransactionModal({TransactionType type = TransactionType.income}) {
+    final isIncome =
+        type == TransactionType.income || type == TransactionType.bonus;
+    final title = type == TransactionType.income
+        ? 'Add Income'
+        : (type == TransactionType.bonus ? 'Add Bonus' : 'Add Expense');
+
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
-      barrierLabel: isIncome ? 'Add Income' : 'Add Expense',
+      barrierLabel: title,
       transitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (context, anim1, anim2) {
         String? selectedCategory;
@@ -553,7 +648,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(width: 16),
                           Text(
-                            isIncome ? 'Add Income' : 'Add Expense',
+                            title,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -763,6 +858,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               amount: amount,
                               date: selectedDate ?? DateTime.now(),
                               isIncome: isIncome,
+                              type: type,
                               currency: 'USD',
                             );
 
@@ -773,7 +869,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             _showSuccessModal(
                               context,
                               selectedCategory!,
-                              isIncome: isIncome,
+                              type: type,
                             );
                           }
                         },
@@ -792,7 +888,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showSuccessModal(
     BuildContext context,
     String category, {
-    bool isIncome = true,
+    TransactionType type = TransactionType.income,
   }) {
     showGeneralDialog(
       context: context,
@@ -800,12 +896,24 @@ class _HomeScreenState extends State<HomeScreen> {
       barrierLabel: 'Success',
       transitionDuration: const Duration(milliseconds: 600),
       pageBuilder: (context, anim1, anim2) {
-        final themeColor = isIncome
+        final themeColor = type == TransactionType.income
             ? AppColors.primaryGreen
-            : AppColors.errorRed;
-        final softThemeColor = isIncome
+            : (type == TransactionType.bonus
+                  ? Colors.amber[700]!
+                  : AppColors.errorRed);
+        final softThemeColor = type == TransactionType.income
             ? AppColors.softGreen
-            : AppColors.softRed;
+            : (type == TransactionType.bonus
+                  ? Colors.amber[50]!
+                  : AppColors.softRed);
+        final icon = type == TransactionType.income
+            ? Icons.check_circle
+            : (type == TransactionType.bonus
+                  ? Icons.stars_rounded
+                  : Icons.remove_circle);
+        final typeStr = type == TransactionType.income
+            ? 'income'
+            : (type == TransactionType.bonus ? 'bonus' : 'expense');
 
         return Center(
           child: Container(
@@ -873,13 +981,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 ),
-                                child: Icon(
-                                  isIncome
-                                      ? Icons.check_circle
-                                      : Icons.remove_circle,
-                                  color: themeColor,
-                                  size: 60,
-                                ),
+                                child: Icon(icon, color: themeColor, size: 60),
                               ),
                             );
                           },
@@ -898,7 +1000,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Your $category ${isIncome ? 'income' : 'expense'} has been added successfully.',
+                      'Your $category $typeStr has been added successfully.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -967,7 +1069,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () => _showTransactionModal(isIncome: true),
+              onTap: () => _showTransactionModal(type: TransactionType.income),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
@@ -990,7 +1092,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(width: 8),
           Expanded(
             child: GestureDetector(
-              onTap: () => _showTransactionModal(isIncome: false),
+              onTap: () => _showTransactionModal(type: TransactionType.expense),
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
@@ -1031,12 +1133,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: AppColors.textDark,
                 ),
               ),
-              Text(
-                'View all',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey[600],
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          AllTransactionsScreen(transactions: _transactions),
+                    ),
+                  );
+                },
+                child: Text(
+                  'View all',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[600],
+                  ),
                 ),
               ),
             ],
@@ -1167,7 +1280,19 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildNavItem(int index, IconData icon, String label) {
     final isSelected = _selectedNavIndex == index;
     return GestureDetector(
-      onTap: () => setState(() => _selectedNavIndex = index),
+      onTap: () {
+        if (index == 1) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  AllTransactionsScreen(transactions: _transactions),
+            ),
+          );
+        } else {
+          setState(() => _selectedNavIndex = index);
+        }
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

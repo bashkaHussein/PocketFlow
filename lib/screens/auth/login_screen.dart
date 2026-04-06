@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pocket_flow/screens/auth/login_screen_widgets.dart';
-<<<<<<< HEAD
-import 'package:pocket_flow/screens/home/home_screen.dart';
-=======
 import 'package:pocket_flow/screens/auth/register_scree.dart';
->>>>>>> d1fac1d5d2ddb170dcb7ecce833afcb325627a51
+import 'package:pocket_flow/screens/home/home_screen.dart';
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
