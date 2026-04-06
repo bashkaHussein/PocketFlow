@@ -150,3 +150,83 @@ class CustomButton extends StatelessWidget {
     );
   }
 }
+
+class WaveBackground extends StatelessWidget {
+  const WaveBackground({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: double.infinity,
+      child: CustomPaint(
+        painter: WavePainter(),
+      ),
+    );
+  }
+}
+
+class WavePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppColors.primaryGreen.withOpacity(0.05)
+      ..style = PaintingStyle.fill;
+
+    // Top Right Wave
+    final path1 = Path();
+    path1.moveTo(size.width * 0.4, 0);
+    path1.quadraticBezierTo(
+      size.width * 0.6,
+      size.height * 0.1,
+      size.width,
+      size.height * 0.05,
+    );
+    path1.lineTo(size.width, 0);
+    path1.close();
+    canvas.drawPath(path1, paint);
+
+    final path2 = Path();
+    paint.color = AppColors.primaryGreen.withOpacity(0.03);
+    path2.moveTo(size.width * 0.2, 0);
+    path2.quadraticBezierTo(
+      size.width * 0.5,
+      size.height * 0.2,
+      size.width,
+      size.height * 0.15,
+    );
+    path2.lineTo(size.width, 0);
+    path2.close();
+    canvas.drawPath(path2, paint);
+
+    // Bottom Left Wave
+    paint.color = AppColors.primaryGreen.withOpacity(0.05);
+    final path3 = Path();
+    path3.moveTo(0, size.height * 0.8);
+    path3.quadraticBezierTo(
+      size.width * 0.3,
+      size.height * 0.75,
+      size.width * 0.5,
+      size.height,
+    );
+    path3.lineTo(0, size.height);
+    path3.close();
+    canvas.drawPath(path3, paint);
+
+    paint.color = AppColors.primaryGreen.withOpacity(0.03);
+    final path4 = Path();
+    path4.moveTo(0, size.height * 0.6);
+    path4.quadraticBezierTo(
+      size.width * 0.4,
+      size.height * 0.7,
+      size.width * 0.7,
+      size.height,
+    );
+    path4.lineTo(0, size.height);
+    path4.close();
+    canvas.drawPath(path4, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
